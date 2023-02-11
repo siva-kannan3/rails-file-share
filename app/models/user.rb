@@ -16,13 +16,10 @@ class User < ApplicationRecord
   validates :email, presence: true
   validates :name, presence: true
 
-  
-
-validates :password,   
-  presence: true,
-  format: { with: PASSWORD_FORMAT, message: "should be atleast 8 charcter or more, must contain a digit, must contain a lower lower case character, must contain an upper case character, must contain a symbol" }, 
-  on: :create 
-
+  validates :password,   
+    presence: true,
+    format: { with: PASSWORD_FORMAT, message: "should be atleast 8 charcter or more, must contain a digit, must contain a lower lower case character, must contain an upper case character, must contain a symbol" }, 
+    on: :create 
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,  :authentication_keys => [:username]
