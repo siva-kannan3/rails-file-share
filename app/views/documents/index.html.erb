@@ -1,66 +1,47 @@
 <div class="card">
-<div class="card-body">
-<div class="d-flex justify-content-between mb-2 ">
-  <h3>File dashboard - <%= @documents.length %> files</h3>
-  <%= form_for(:document, url: '/documents', method: 'post') do |form| %>
-  <div class="field">
-    <%= form.file_field :attached_document, class: "btn btn-secondary custom-file-input", onchange: "this.form.submit()" %>
-  </div>
-  <% end %>
-</div>
-<table class="table table-bordered border-dark">
-  <thead class="table-dark">
-    <tr>
-      
-      <th>Name</th>
-      <th>Uploaded date</th>
-      <th>Size</th>
-      <th>Actions</th>
-      <th>Sharing</th>
-      
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @documents.each do |document| %>
-      <tr>
-        
-        
-        <td><%= document.attached_document.filename %></td>
-        
-        <td><%= document.attached_document.created_at.strftime("%-d %b %Y %H:%M") %></td>
-        
-        <td><%= human_readable_size(document.attached_document.byte_size) %></td>
-
-        <td>
-        <%= link_to "Download", rails_blob_path(document.attached_document, disposition: 'attachment') %> | 
-        <%= link_to 'Delete', document, method: :delete, data: { confirm: 'Are you sure?' } %>
-        </td>
-        
-        
-        <td>
-          
-          <%= form_with(model: document, local: true, method: 'patch') do |form| %>
-  
-
-  
-
-  <div class="field form-check form-switch">
-    <%= form.label :shared, class: "form-check-label" %>
-    <%= form.check_box :shared, class: "form-check-input", checked: document.shared, onchange: "this.form.submit();" %>
-  </div>
-
-  
-<% end %>
-      <% if document.shared %>
-        <%= link_to 'Link', "#{root_url}document/#{document.key}", target: '_blank' %>
+  <div class="card-body">
+    <div class="d-flex justify-content-between mb-2 ">
+      <h3>File dashboard - <%= @documents.length %> files</h3>
+      <%= form_for(:document, url: '/documents', method: 'post') do |form| %>
+        <div class="field">
+          <%= form.file_field :attached_document, class: "btn btn-secondary custom-file-input", onchange: "this.form.submit()" %>
+        </div>
       <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    </div>
+    <table class="table table-bordered border-dark">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Uploaded date</th>
+          <th>Size</th>
+          <th>Actions</th>
+          <th>Sharing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @documents.each do |document| %>
+          <tr>
+            <td><%= document.attached_document.filename %></td>
+            <td><%= document.attached_document.created_at.strftime("%-d %b %Y %H:%M") %></td>
+            <td><%= human_readable_size(document.attached_document.byte_size) %></td>
+            <td>
+              <%= link_to "Download", rails_blob_path(document.attached_document, disposition: 'attachment') %> | 
+              <%= link_to 'Delete', document, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+            <td>
+              <%= form_with(model: document, local: true, method: 'patch') do |form| %>
+                <div class="field form-check form-switch">
+                  <%= form.label :shared, class: "form-check-label" %>
+                  <%= form.check_box :shared, class: "form-check-input", checked: document.shared, onchange: "this.form.submit();" %>
+                </div>
+              <% end %>
+              <% if document.shared %>
+                <%= link_to 'Link', "#{root_url}document/#{document.key}", target: '_blank' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
-</div>
-
-

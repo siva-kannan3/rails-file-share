@@ -5,16 +5,14 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      
       <div class="d-flex gap-3 ms-auto">
         <% if user_signed_in? %>
-        <%= link_to current_user.name, edit_user_registration_path ,class:"btn btn-outline-info" %>
-        <%= link_to 'Logout', destroy_user_session_path, method: :delete, class:'btn btn-secondary' %>
+          <%= link_to current_user.name, edit_user_registration_path ,class:"btn btn-outline-info" %>
+          <%= link_to 'Logout', destroy_user_session_path, method: :delete, class:'btn btn-secondary' %>
         <% else %>
-        <%= link_to 'Sign up', new_user_registration_path, class:'btn btn-secondary' %>
-        <%= link_to 'Sign in', new_user_session_path, class:'btn btn-success' %>
+          <%= link_to 'Sign up', new_user_registration_path, class:'btn btn-secondary' %>
+          <%= link_to 'Sign in', new_user_session_path, class:'btn btn-success' %>
         <% end %>
-        
       </div>
     </div>
   </div>

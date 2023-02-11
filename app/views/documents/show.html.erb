@@ -1,52 +1,35 @@
 <div class="card">
-<div class="card-body">
-<% if @document %>
-<% if @document.shared %>
-<div class="d-flex justify-content-between mb-2 ">
-  <h4>File shared by <%= @document_owner.name %></h4>
-</div>
-<table class="table table-bordered border-dark">
-  <thead class="table-dark">
-    <tr>
-      
-      <th>Name</th>
-      <th>Uploaded date</th>
-      <th>Size</th>
-      <th>Actions</th>
-      
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-        
-        <td><%= @document.attached_document.filename %></td>
-        
-        <td><%= @document.attached_document.created_at.strftime("%-d %b %Y %H:%M") %></td>
-        
-        <td><%= human_readable_size(@document.attached_document.byte_size) %></td>
-
-        <td>
-        <%= link_to "Download", rails_blob_path(@document.attached_document, disposition: 'attachment') %>
-        </td>
-        
-        
-        
-      </tr>
-    
-  </tbody>
-</table>
-</div>
-</div>
-<% else %>
+  <div class="card-body">
+    <% if @document %>
+      <% if @document.shared %>
+        <div class="d-flex justify-content-between mb-2 ">
+          <h4>File shared by <%= @document_owner.name %></h4>
+        </div>
+        <table class="table table-bordered border-dark">
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Uploaded date</th>
+              <th>Size</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><%= @document.attached_document.filename %></td>
+              <td><%= @document.attached_document.created_at.strftime("%-d %b %Y %H:%M") %></td>
+              <td><%= human_readable_size(@document.attached_document.byte_size) %></td>
+              <td>
+                <%= link_to "Download", rails_blob_path(@document.attached_document, disposition: 'attachment') %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% else %>
     <h4 class="text-danger">File is not shared</h4>
-
   <% end %>
-
-
 <% else %>
-<h4 class="text-danger">File not found</h4>
-
+  <h4 class="text-danger">File not found</h4>
 <% end %>
