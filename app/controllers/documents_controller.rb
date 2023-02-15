@@ -27,23 +27,30 @@ class DocumentsController < ApplicationController
   def create
     params[:document][:key] = SecureRandom.hex(10)
     @document = current_user.documents.create(document_params)
-    @document.save
-    flash[:notice] = "File uploaded successfully!"
-    redirect_to root_path
+
+    if @document.save
+      redirect_to root_path, notice: "File uploaded successfully!"
+    else
+      redirect_to root_path, alert: "File upload failed!"
+    end
   end
 
   # PATCH/PUT /documents/1 or /documents/1.json
   def update
-    @document && @document.update(document_params) 
-    flash[:notice] = "Status updated successfully!"
-    redirect_to root_path
+    if @document.update(document_params) 
+      redirect_to root_path, notice: "Status updated successfully!"
+    else
+      redirect_to root_path, alert: "Status update failed!"
+    end
   end
 
   # DELETE /documents/1 or /documents/1.json
   def destroy
-    @document.attached_document.purge_later
-    @document.destroy
-    redirect_to root_path
+    if @document.destroy
+      redirect_to root_path, notice: "Document deleted successfully!"
+    else
+      redirect_to root_path, alert: "Document delete failed!"
+    end
   end
 
   private
