@@ -35,9 +35,7 @@
                   <%= form.check_box :shared, class: "form-check-input", checked: document.shared, onchange: "this.form.submit();" %>
                 </div>
               <% end %>
-              <% if document.shared %>
-                <%= link_to 'Link', "#{root_url}documents/#{document.key}", target: '_blank' %>
-              <% end %>
+              <%= link_to 'Link', "#{root_url}documents/#{document.key}", target: '_blank' %>
             </td>
           </tr>
         <% end %>

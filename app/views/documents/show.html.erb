@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-body">
     <% if @document %>
-      <% if @document.shared %>
+      <% if @document.shared || (current_user && (@document.user_id == current_user.id)) %>
         <div class="d-flex justify-content-between mb-2 ">
           <h4>File shared by <%= @document_owner.name %></h4>
         </div>
