@@ -57,6 +57,9 @@ class DocumentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_document
       @document = current_user.documents.find(params[:id])
+      if !@document
+        redirect_to root_path, alert: "Could not find the document!"
+      end
     end
 
     # Only allow a list of trusted parameters through.
