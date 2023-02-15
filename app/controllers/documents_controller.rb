@@ -1,9 +1,9 @@
 require 'securerandom'
 
 class DocumentsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
-  before_action :set_document, only: %i[ update destroy ]
-  helper_method :human_readable_size
+  before_action :authenticate_user!, except: [:show, :download]
+  before_action :set_document, only: %i[ update destroy]
+  helper_method :download_file
 
 
   # GET /documents or /documents.json
@@ -20,6 +20,20 @@ class DocumentsController < ApplicationController
   # GET /documents/new
   def new
     @document = Document.new
+  end
+
+  def download
+    @document = Document.find_by!(key: params[:key])
+    if @document
+      @document_owner = @document.try!(:user)
+      if (@document_owner == current_user) || (@document_owner != current_user && @document.shared)
+        download_file(@document)
+      else 
+        redirect_to root_path, alert: "File download failed!"
+      end
+    else
+      redirect_to root_path, alert: "File download failed!"
+    end
   end
 
 
@@ -67,4 +81,7 @@ class DocumentsController < ApplicationController
       params.require(:document).permit(:key, :shared, :attached_document)
     end
 
+    def download_file(document)
+      send_data document.attached_document.download, filename: document.attached_document.filename.to_s, content_type: document.attached_document.content_type
+    end
 end

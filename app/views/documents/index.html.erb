@@ -25,7 +25,7 @@
             <td><%= document.attached_document.created_at.strftime("%-d %b %Y %H:%M") %></td>
             <td><%= number_to_human_size(document.attached_document.byte_size) %></td>
             <td>
-              <%= link_to "Download", rails_blob_path(document.attached_document, disposition: 'attachment') %> | 
+              <%= link_to "Download", "#{root_url}document/download/#{document.key}", target: '_blank' %> | 
               <%= link_to 'Delete', document, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
             <td>
