@@ -17,7 +17,7 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create document" do
     assert_difference('Document.count') do
-      post documents_url, params: { document: { key: @document.key, shared: @document.shared, user_id: @document.user_id } }
+      post documents_url, params: { document: { key: @document.key, shared: @document.shared, user_id: @document.user_id, attached_document: @document.attached_document } }
     end
 
     assert_redirected_to document_url(Document.last)
