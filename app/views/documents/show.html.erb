@@ -1,0 +1,35 @@
+<div class="card">
+  <div class="card-body">
+    <% if @document %>
+      <% if @document.shared || (current_user && (@document.user_id == current_user.id)) %>
+        <div class="d-flex justify-content-between mb-2 ">
+          <h4>File shared by <%= @document_owner.name %></h4>
+        </div>
+        <table class="table table-bordered border-dark">
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Uploaded date</th>
+              <th>Size</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><%= @document.attached_document.filename %></td>
+              <td><%= @document.attached_document.created_at.strftime("%-d %b %Y %H:%M") %></td>
+              <td><%= number_to_human_size(@document.attached_document.byte_size) %></td>
+              <td>
+                <%= link_to "Download", "#{root_url}document/download/#{@document.key}", target: '_blank' %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% else %>
+    <h4 class="text-danger">File is not shared</h4>
+  <% end %>
+<% else %>
+  <h4 class="text-danger">File not found</h4>
+<% end %>
