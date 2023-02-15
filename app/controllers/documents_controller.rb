@@ -2,7 +2,7 @@ require 'securerandom'
 
 class DocumentsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
-  before_action :set_document, only: %i[ edit update destroy ]
+  before_action :set_document, only: %i[ update destroy ]
   helper_method :human_readable_size
 
 
@@ -14,7 +14,7 @@ class DocumentsController < ApplicationController
   # GET /documents/1 or /documents/1.json
   def show
     @document = Document.where(key: params[:id]).first
-    @document_owner = User.find(@document[:user_id]) if @document
+    @document_owner = @document.try!(:user)
   end
 
   # GET /documents/new
@@ -34,7 +34,6 @@ class DocumentsController < ApplicationController
 
   # PATCH/PUT /documents/1 or /documents/1.json
   def update
-    @document = current_user.documents.find_by!(id: params[:id])
     @document && @document.update(document_params) 
     flash[:notice] = "Status updated successfully!"
     redirect_to root_path
@@ -58,16 +57,4 @@ class DocumentsController < ApplicationController
       params.require(:document).permit(:key, :shared, :attached_document)
     end
 
-    def human_readable_size(size)
-      @kilo = size / 1024
-        if @kilo < 1024
-          return "#{@kilo} KB"
-        end
-          @mega = @kilo / 1024
-        if @mega < 1024
-          return "#{@mega} MB"
-        end
-          @giga = @mb / 1024
-      return "#{@giga} GB"
-    end
 end
